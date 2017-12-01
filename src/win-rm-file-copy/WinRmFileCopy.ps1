@@ -13,6 +13,7 @@ try
     [string]$targetPath = Get-VstsInput -Name TargetPath -Require
     [bool]$cleanTargetBeforeCopy = Get-VstsInput -Name CleanTargetBeforeCopy -AsBool
     [bool]$copyFilesInParallel = Get-VstsInput -Name CopyFilesInParallel -AsBool
+    [bool]$useSsl = Get-VstsInput -Name UseSsl -AsBool
     [bool]$verbose = Get-VstsTaskVariable -Name "System.Debug" -AsBool
 
     $sourcePath = $sourcePath.Trim('"')
@@ -68,12 +69,14 @@ try
             [string]$targetPath,
             [System.Management.Automation.PSCredential]$credential,
             [bool]$cleanTargetBeforeCopy,
+            [int]$port,
+            [bool]$useSsl,
             [bool]$verbose
         )
 
         try
         {
-            $session = New-PSSession -ComputerName $fqdn -Credential $credential
+            $session = New-PSSession -ComputerName $fqdn -Credential $credential -UseSSL:$useSsl -Port $port
 
             $testPath = {
                 param ([string]$targetPath)
@@ -110,9 +113,27 @@ try
     {
         foreach($machine in $machines)
         {
-            Write-Output "Copy started for -  $machine"
+            $items = $machine -split ":"
+            
+            if ($items.Count -gt 1)
+            {
+                $machineName = $items[0]
+                $machinePort = $items[1]
+            }
+            else
+            {
+                $machineName = $items[0]
+                $machinePort = 5985
+            
+                if ($useSsl)
+                {
+                    $machinePort = 5986
+                }
+            }
 
-            Invoke-Command -ScriptBlock $CopyJob -ArgumentList $machine, $sourcePath, $targetPath, $machineCredential, $cleanTargetBeforeCopy, $verbose
+            Write-Output "Copy started for - $machineName"
+
+            Invoke-Command -ScriptBlock $CopyJob -ArgumentList $machineName, $sourcePath, $targetPath, $machineCredential, $cleanTargetBeforeCopy, $machinePort, $useSsl, $verbose
         } 
     }
     else
@@ -121,9 +142,27 @@ try
 
         foreach($machine in $machines)
         {
-            Write-Output "Copy started for -  $machine"
+            $items = $machine -split ":"
+            
+            if ($items.Count -gt 1)
+            {
+                $machineName = $items[0]
+                $machinePort = $items[1]
+            }
+            else
+            {
+                $machineName = $items[0]
+                $machinePort = 5985
+            
+                if ($useSsl)
+                {
+                    $machinePort = 5986
+                }
+            }
 
-            $job = Start-Job -ScriptBlock $CopyJob -ArgumentList $machine, $sourcePath, $targetPath, $machineCredential, $cleanTargetBeforeCopy, $verbose
+            Write-Output "Copy started for - $machineName"
+
+            $job = Start-Job -ScriptBlock $CopyJob -ArgumentList $machineName, $sourcePath, $targetPath, $machineCredential, $cleanTargetBeforeCopy, $machinePort, $useSsl, $verbose
 
             $Jobs.Add($job.Id, $machine)
         }        
