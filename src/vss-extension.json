@@ -1,0 +1,68 @@
+{
+  "manifestVersion": 1,
+  "extensionId": "win-rm-file-copy",
+  "name": "WinRmFileCopy",
+  "version": "0.1.0",
+  "publisher": "mmajcica",
+  "description": "Windows Machine File Copy (WinRM)",
+  "public": false,
+  "galleryFlags": [
+    "Preview"
+  ],
+  "icons": {
+    "default": "images/logo.png",
+    "large": "images/logo_large.png"
+  },
+  "categories": [
+    "Build and release"
+  ],
+  "tags": [
+    "copy",
+    "windows",
+    "winrm",
+    "file"
+  ],
+  "links": {
+    "home": {
+      "uri": "http://blog.majcica.com/"
+    },
+    "support": {
+      "uri": "http://blog.majcica.com/"
+    }
+  },
+  "branding": {
+    "color": "#777",
+    "theme": "light"
+  },
+  "content": {
+    "details": {
+      "path": "README.md"
+    }
+  },
+  "files": [
+    {
+      "path": "images",
+      "addressable": true
+    },
+    {
+      "path": "win-rm-file-copy"
+    }
+  ],
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "contributions": [
+    {
+      "id": "win-rm-file-copy",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "win-rm-file-copy"
+      }
+    }
+  ]
+}
