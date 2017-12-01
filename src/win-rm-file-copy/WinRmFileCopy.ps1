@@ -13,6 +13,7 @@ try
     [string]$targetPath = Get-VstsInput -Name TargetPath -Require
     [bool]$cleanTargetBeforeCopy = Get-VstsInput -Name CleanTargetBeforeCopy -AsBool
     [bool]$copyFilesInParallel = Get-VstsInput -Name CopyFilesInParallel -AsBool
+    [bool]$verbose = Get-VstsTaskVariable -Name "System.Debug" -AsBool
 
     $sourcePath = $sourcePath.Trim('"')
     $targetPath = $targetPath.Trim('"')
@@ -66,7 +67,8 @@ try
             [string]$sourcePath,
             [string]$targetPath,
             [System.Management.Automation.PSCredential]$credential,
-            [bool]$cleanTargetBeforeCopy
+            [bool]$cleanTargetBeforeCopy,
+            [bool]$verbose
         )
 
         try
@@ -84,6 +86,7 @@ try
                 if (-not (Test-Path -LiteralPath $targetPath -PathType Container))
                 {
                     New-Item -ItemType Directory -Force -Path $targetPath | Out-Null
+                    Write-Verbose "Created destination folder '$targetPath'."
                 }
             }
 
@@ -94,7 +97,7 @@ try
                 Invoke-Command -Session $session -ScriptBlock { param ([string]$path) Get-ChildItem $path -Force | Remove-Item -Recurse -Force } -ArgumentList $targetPath
             }
 
-            Copy-Item -Path $sourcePath -Destination $targetPath -Force -Recurse -Container -ToSession $session
+            Copy-Item -Path $sourcePath -Destination $targetPath -Force -Recurse -Container -ToSession $session -Verbose:$verbose
         }
         finally
         {
@@ -103,13 +106,13 @@ try
         }
     }
 
-    if($copyFilesInParallel -eq $false -or  ( $machines.Count -eq 1 ))
+    if ($copyFilesInParallel -eq $false -or ($machines.Count -eq 1))
     {
         foreach($machine in $machines)
         {
             Write-Output "Copy started for -  $machine"
 
-            Invoke-Command -ScriptBlock $CopyJob -ArgumentList $machine, $sourcePath, $targetPath, $machineCredential, $cleanTargetBeforeCopy
+            Invoke-Command -ScriptBlock $CopyJob -ArgumentList $machine, $sourcePath, $targetPath, $machineCredential, $cleanTargetBeforeCopy, $verbose
         } 
     }
     else
@@ -120,7 +123,7 @@ try
         {
             Write-Output "Copy started for -  $machine"
 
-            $job = Start-Job -ScriptBlock $CopyJob -ArgumentList $machine, $sourcePath, $targetPath, $machineCredential, $cleanTargetBeforeCopy
+            $job = Start-Job -ScriptBlock $CopyJob -ArgumentList $machine, $sourcePath, $targetPath, $machineCredential, $cleanTargetBeforeCopy, $verbose
 
             $Jobs.Add($job.Id, $machine)
         }        

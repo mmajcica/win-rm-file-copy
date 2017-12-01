@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "extensionId": "win-rm-file-copy",
   "name": "WinRm File Copy",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "publisher": "mmajcica",
   "description": "Windows Machine File Copy (WinRM)",
   "public": false,
@@ -41,9 +41,14 @@
       "uri": "https://github.com/mmajcica/win-rm-file-copy"
   },
   "branding": {
-    "color": "#09090B",
-    "theme": "dark"
+    "color": "#e9ebed",
+    "theme": "light"
   },
+  "screenshots": [
+    {
+        "path": "images/copy-files-winrm.png"
+    }
+  ],
   "content": {
     "details": {
       "path": "README.md"

@@ -19,3 +19,9 @@ The only requirement is PowerShell V5 installed both on the build server and on 
 *	**Destination Folder**: The folder in the Windows machines where the files will be copied to. An example of the destination folder is c:\FabrikamFibre\Web.
 *	**Clean Target**: Checking this option will clean the destination folder prior to copying the files to it.
 *	**Copy Files in Parallel**: Checking this option will copy files to all the target machines in parallel, which can speed up the copying process.
+
+
+## Contributing
+
+Feel free to notify any issue in the issues section of this GitHub repository.
+In order to build this task, you will need Node.js and gulp installed. Once cloned the repository, just run 'gulp package' and in the newly created folder called dist you will find a new version of the extension.
