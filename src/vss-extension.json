@@ -1,17 +1,17 @@
 {
   "manifestVersion": 1,
   "extensionId": "win-rm-file-copy",
-  "name": "WinRmFileCopy",
-  "version": "0.1.0",
+  "name": "WinRm File Copy",
+  "version": "1.0.0",
   "publisher": "mmajcica",
   "description": "Windows Machine File Copy (WinRM)",
   "public": false,
   "galleryFlags": [
-    "Preview"
+    "Public"
   ],
   "icons": {
     "default": "images/logo.png",
-    "large": "images/logo_large.png"
+    "large": "images/logo-large.png"
   },
   "categories": [
     "Build and release"
@@ -27,12 +27,22 @@
       "uri": "http://blog.majcica.com/"
     },
     "support": {
-      "uri": "http://blog.majcica.com/"
+      "uri": "http://blog.majcica.com/2017/12/01/using-windows-machine-file-copy-winrm-vsts-extension"
+    },
+    "repository": {
+        "uri": "https://github.com/mmajcica/win-rm-file-copy"
+    },
+    "issues": {
+        "uri": "https://github.com/mmajcica/win-rm-file-copy/issues"
     }
   },
+  "repository": {
+      "type": "git",
+      "uri": "https://github.com/mmajcica/win-rm-file-copy"
+  },
   "branding": {
-    "color": "#777",
-    "theme": "light"
+    "color": "#09090B",
+    "theme": "dark"
   },
   "content": {
     "details": {

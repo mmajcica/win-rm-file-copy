@@ -4,7 +4,7 @@
   "friendlyName": "Windows Machine File Copy (WinRM)",
   "description": "Copy files on remote machines via WinRM",
   "author": "Mario Majcica",
-  "helpMarkDown": "Replace with markdown to show in help",
+  "helpMarkDown": "[More Information](https://marketplace.visualstudio.com/items?itemName=mmajcica.win-rm-file-copy)",
   "category": "Deploy",
   "visibility": [
     "Build",
