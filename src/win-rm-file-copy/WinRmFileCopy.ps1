@@ -3,6 +3,30 @@ param()
 
 Trace-VstsEnteringInvocation $MyInvocation
 
+function Resolve-HostNameOrAddress
+{
+    [CmdletBinding()]
+    param
+    (
+        [Parameter(Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName=$true)]
+        [Alias('HostName','IPAddress','CNAME','cn')]
+        [string]$ComputerName = $env:COMPUTERNAME
+    )
+    BEGIN { }
+    PROCESS
+    { 
+        if (-not ([bool]($ComputerName -as [ipaddress])))
+        {
+            $ComputerName = ([System.Net.Dns]::GetHostAddresses($ComputerName)).IPAddressToString
+        }
+
+        $host1 = [System.Net.Dns]::GetHostbyAddress($ComputerName)
+
+        return $host1.HostName
+    }
+    END {}
+}
+
 try
 {
     # Get inputs for the task
@@ -15,7 +39,7 @@ try
     [bool]$copyFilesInParallel = Get-VstsInput -Name CopyFilesInParallel -AsBool
     [bool]$useSsl = Get-VstsInput -Name UseSsl -AsBool
     [bool]$TestCertificate = Get-VstsInput -Name TestCertificate -AsBool
-    
+
     [bool]$verbose = Get-VstsTaskVariable -Name "System.Debug" -AsBool
 
     $sourcePath = $sourcePath.Trim('"')
@@ -53,7 +77,7 @@ try
 
     Write-Output "Files from '$sourcePath' will be copied to the path '$targetPath' on the remote machine(s)."
 
-    $machines = $machineNames.split(',') | ForEach-Object { if ($_ -and $_.trim()) { $_.trim() } }
+    $machines = $machineNames.split(',') | ForEach-Object { if ($_ -and $_.trim()) { $_.trim() } } | Resolve-HostNameOrAddress
 
     $secureAdminPassword = ConvertTo-SecureString $adminPassword -AsPlainText -Force
     $machineCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $adminUserName, $secureAdminPassword
