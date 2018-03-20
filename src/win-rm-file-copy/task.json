@@ -14,7 +14,7 @@
     "version": {
       "Major": "2",
       "Minor": "0",
-      "Patch": "0"
+      "Patch": "1"
     },
     "minimumAgentVersion": "1.104.0",
     "groups": [
@@ -82,6 +82,16 @@
           "required": false,
           "groupName": "advanced",
           "helpMarkDown": "Secure Socket layer connection will be used for WinRM connection."
+        },
+        {
+            "name": "TestCertificate",
+            "type": "boolean",
+            "label": "Using Test Certificate",
+            "defaultValue": "false",
+            "visibleRule": "UseSsl = true",
+            "required": false,
+            "groupName": "advanced",
+            "helpMarkDown": "If this option is selected, client skips the validation that the server certificate is signed by a trusted certificate authority (CA) when connecting over Hypertext Transfer Protocol over Secure Socket Layer (HTTPS)."
         },
         {
             "name": "CopyFilesInParallel",

@@ -14,6 +14,8 @@ try
     [bool]$cleanTargetBeforeCopy = Get-VstsInput -Name CleanTargetBeforeCopy -AsBool
     [bool]$copyFilesInParallel = Get-VstsInput -Name CopyFilesInParallel -AsBool
     [bool]$useSsl = Get-VstsInput -Name UseSsl -AsBool
+    [bool]$TestCertificate = Get-VstsInput -Name TestCertificate -AsBool
+    
     [bool]$verbose = Get-VstsTaskVariable -Name "System.Debug" -AsBool
 
     $sourcePath = $sourcePath.Trim('"')
@@ -71,12 +73,21 @@ try
             [bool]$cleanTargetBeforeCopy,
             [int]$port,
             [bool]$useSsl,
+            [bool]$TestCertificate,
             [bool]$verbose
         )
 
         try
         {
-            $session = New-PSSession -ComputerName $fqdn -Credential $credential -UseSSL:$useSsl -Port $port
+            if ($useSsl -and $TestCertificate)
+            {
+				$SessionOptions = New-PSSessionOption -SkipCACheck -SkipCNCheck -SkipRevocationCheck
+				$session = New-PSSession -ComputerName $fqdn -Credential $credential -UseSSL:$useSsl -Port $port -SessionOption $SessionOptions
+			}
+            else
+            {
+				$session = New-PSSession -ComputerName $fqdn -Credential $credential -UseSSL:$useSsl -Port $port
+			}
 
             $testPath = {
                 param ([string]$targetPath)
@@ -133,7 +144,7 @@ try
 
             Write-Output "Copy started for - $machineName"
 
-            Invoke-Command -ScriptBlock $CopyJob -ArgumentList $machineName, $sourcePath, $targetPath, $machineCredential, $cleanTargetBeforeCopy, $machinePort, $useSsl, $verbose
+            Invoke-Command -ScriptBlock $CopyJob -ArgumentList $machineName, $sourcePath, $targetPath, $machineCredential, $cleanTargetBeforeCopy, $machinePort, $useSsl, $TestCertificate, $verbose
         } 
     }
     else

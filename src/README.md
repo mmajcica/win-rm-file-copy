@@ -20,3 +20,7 @@ The only requirement is PowerShell V5 installed both on the build server and on 
 *	**Use SSL**: In case you are using secure WinRM, HTTPS for transport, this is the setting you will need to flag.
 *	**Clean Target**: Checking this option will clean the destination folder prior to copying the files to it.
 *	**Copy Files in Parallel**: Checking this option will copy files to all the target machines in parallel, which can speed up the copying process.
+
+### Version history
+
+* 2.0.1 - Implements the Skip CA Check for HTTPS with a self signed certificate ([#1](https://github.com/mmajcica/win-rm-file-copy/issues/1))
