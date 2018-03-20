@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "extensionId": "win-rm-file-copy",
   "name": "WinRm File Copy",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "publisher": "mmajcica",
   "description": "Windows Machine File Copy (WinRM)",
   "public": false,
@@ -60,7 +60,7 @@
       "addressable": true
     },
     {
-      "path": "win-rm-file-copy"
+      "path": "task"
     }
   ],
   "targets": [
@@ -76,7 +76,7 @@
         "ms.vss-distributed-task.tasks"
       ],
       "properties": {
-        "name": "win-rm-file-copy"
+        "name": "task"
       }
     }
   ]

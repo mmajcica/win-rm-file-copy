@@ -21,8 +21,11 @@ The only requirement is PowerShell V5 installed both on the build server and on 
 *	**Clean Target**: Checking this option will clean the destination folder prior to copying the files to it.
 *	**Copy Files in Parallel**: Checking this option will copy files to all the target machines in parallel, which can speed up the copying process.
 
-
 ## Contributing
 
-Feel free to notify any issue in the issues section of this GitHub repository.
-In order to build this task, you will need Node.js and gulp installed. Once cloned the repository, just run 'gulp package' and in the newly created folder called dist you will find a new version of the extension.
+Feel free to notify any issue in the issues section of this GitHub repository. In order to build this task, you will need Node.js and gulp installed. Once cloned the repository, just run 'npm install' then 'gulp package' and in the newly created folder called _packages you will find a new version of the extension.
+
+## Task version history
+
+* 2.0.2 - Resolve CNAME before creating a WinRM session ([#2](https://github.com/mmajcica/win-rm-file-copy/issues/2))
+* 2.0.1 - Implements the Skip CA Check for HTTPS with a self signed certificate ([#1](https://github.com/mmajcica/win-rm-file-copy/issues/1))
