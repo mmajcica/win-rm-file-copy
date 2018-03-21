@@ -12,15 +12,17 @@ function Resolve-HostNameOrAddress
         [Alias('HostName','IPAddress','CNAME','cn')]
         [string]$ComputerName = $env:COMPUTERNAME
     )
-    BEGIN { }
+    BEGIN { Write-Verbose "Invoked Resolve-HostNameOrAddress with ComputerName = '$ComputerName'" }
     PROCESS
     { 
-        if (-not ([bool]($ComputerName -as [ipaddress])))
+        if ([bool]($ComputerName -as [ipaddress]))
         {
-            $ComputerName = ([System.Net.Dns]::GetHostAddresses($ComputerName)).IPAddressToString
+            $host1 = [System.Net.Dns]::GetHostEntry($ComputerName)
         }
-
-        $host1 = [System.Net.Dns]::GetHostbyAddress($ComputerName)
+        else
+        {
+            $host1 = [System.Net.Dns]::GetHostByName($ComputerName)
+        }
 
         return $host1.HostName
     }
@@ -39,7 +41,6 @@ try
     [bool]$copyFilesInParallel = Get-VstsInput -Name CopyFilesInParallel -AsBool
     [bool]$useSsl = Get-VstsInput -Name UseSsl -AsBool
     [bool]$TestCertificate = Get-VstsInput -Name TestCertificate -AsBool
-
     [bool]$verbose = Get-VstsTaskVariable -Name "System.Debug" -AsBool
 
     $sourcePath = $sourcePath.Trim('"')
@@ -77,7 +78,7 @@ try
 
     Write-Output "Files from '$sourcePath' will be copied to the path '$targetPath' on the remote machine(s)."
 
-    $machines = $machineNames.split(',') | ForEach-Object { if ($_ -and $_.trim()) { $_.trim() } } | Resolve-HostNameOrAddress
+    $machines = $machineNames.split(',') | ForEach-Object { if ($_ -and $_.trim()) { $_.trim() } }
 
     $secureAdminPassword = ConvertTo-SecureString $adminPassword -AsPlainText -Force
     $machineCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $adminUserName, $secureAdminPassword
@@ -113,7 +114,8 @@ try
 				$session = New-PSSession -ComputerName $fqdn -Credential $credential -UseSSL:$useSsl -Port $port
 			}
 
-            $testPath = {
+            $testPath =
+            {
                 param ([string]$targetPath)
         
                 if (-not (Test-Path -LiteralPath $targetPath -IsValid -PathType Container))
@@ -152,12 +154,12 @@ try
             
             if ($items.Count -gt 1)
             {
-                $machineName = $items[0]
+                $machineName = Resolve-HostNameOrAddress -ComputerName $items[0]
                 $machinePort = $items[1]
             }
             else
             {
-                $machineName = $items[0]
+                $machineName = Resolve-HostNameOrAddress -ComputerName $items[0]
                 $machinePort = 5985
             
                 if ($useSsl)
@@ -181,12 +183,12 @@ try
             
             if ($items.Count -gt 1)
             {
-                $machineName = $items[0]
+                $machineName = Resolve-HostNameOrAddress -ComputerName $items[0]
                 $machinePort = $items[1]
             }
             else
             {
-                $machineName = $items[0]
+                $machineName = Resolve-HostNameOrAddress -ComputerName $items[0]
                 $machinePort = 5985
             
                 if ($useSsl)
