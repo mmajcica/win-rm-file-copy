@@ -14,22 +14,15 @@ function Resolve-HostNameOrAddress
     )
     BEGIN { Write-Verbose "Invoked Resolve-HostNameOrAddress with ComputerName = '$ComputerName'" }
     PROCESS
-    { 
+    {
         if ([bool]($ComputerName -as [ipaddress]))
         {
-            try {
-                $host1 = [System.Net.Dns]::GetHostEntry($ComputerName)
-            }
-            catch {
-                return $ComputerName
-            }
+            return $ComputerName
         }
         else
         {
-            $host1 = [System.Net.Dns]::GetHostByName($ComputerName)
+            return [System.Net.Dns]::GetHostByName($ComputerName).HostName
         }
-
-        return $host1.HostName
     }
     END {}
 }

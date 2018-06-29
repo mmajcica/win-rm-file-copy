@@ -25,6 +25,7 @@ The only requirement is PowerShell V5 installed both on the build server and on 
 
 ## Task version history
 
+* 2.0.7 - Solved the issue where task can't resolve reverse DNS for IP addresses ([#4](https://github.com/mmajcica/win-rm-file-copy/issues/4))
 * 2.0.6 - "minimumAgentVersion" set to "1.95.0" in order to ensure the compatibility with TFS 2015 Update 2 ([#5](https://github.com/mmajcica/win-rm-file-copy/issues/5))
 * 2.0.5 - Solved the issues introduced with v2.0.2 where reverse lookup data in DNS is not present
 * 2.0.2 - Resolve CNAME before creating a WinRM session ([#2](https://github.com/mmajcica/win-rm-file-copy/issues/2))
