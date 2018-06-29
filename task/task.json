@@ -7,14 +7,14 @@
     "helpMarkDown": "Replace with markdown to show in help",
     "category": "Deploy",
     "visibility": [
-      "Build",
-      "Release"
+        "Build",
+        "Release"
     ],
     "demands": [],
     "version": {
-      "Major": "2",
-      "Minor": "0",
-      "Patch": "6"
+        "Major": "2",
+        "Minor": "0",
+        "Patch": "7"
     },
     "minimumAgentVersion": "1.95.0",
     "groups": [
@@ -75,13 +75,13 @@
             "helpMarkDown": "Selecting it will clean the destination folder before copying the files."
         },
         {
-          "name": "UseSsl",
-          "type": "boolean",
-          "label": "Use SSL",
-          "defaultValue": "false",
-          "required": false,
-          "groupName": "advanced",
-          "helpMarkDown": "Secure Socket layer connection will be used for WinRM connection."
+            "name": "UseSsl",
+            "type": "boolean",
+            "label": "Use SSL",
+            "defaultValue": "false",
+            "required": false,
+            "groupName": "advanced",
+            "helpMarkDown": "Secure Socket layer connection will be used for WinRM connection."
         },
         {
             "name": "TestCertificate",
@@ -109,4 +109,4 @@
             "target": "WinRmFileCopy.ps1"
         }
     }
-  }
+}
