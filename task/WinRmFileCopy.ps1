@@ -17,7 +17,12 @@ function Resolve-HostNameOrAddress
     { 
         if ([bool]($ComputerName -as [ipaddress]))
         {
-            return $ComputerName
+            try {
+                $host1 = [System.Net.Dns]::GetHostEntry($ComputerName)
+            }
+            catch {
+                return $ComputerName
+            }
         }
         else
         {
