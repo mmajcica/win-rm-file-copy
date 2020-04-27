@@ -42,7 +42,7 @@ stages:
       inputs:
         targetType: 'inline'
         script: 'ls'
-        workingDirectory: '$(Pipeline.Workspace)'
+        workingDirectory: '$(Pipeline.Workspace)/Extension'
     - task: TfxInstaller@2
       inputs:
         version: 'v0.7.x'
@@ -51,7 +51,7 @@ stages:
         connectTo: 'VsTeam'
         connectedServiceName: 'Marketplace Test'
         fileType: 'vsix'
-        vsixFile: '$(Pipeline.Workspace)/extension/*.vsix'
+        vsixFile: '$(Pipeline.Workspace)/Extension/*.vsix'
         extensionTag: '-test'
         updateTasksVersion: false
         extensionVisibility: 'private'
