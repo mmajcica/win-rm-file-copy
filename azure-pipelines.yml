@@ -17,24 +17,57 @@ stages:
       image: 'ubuntu-latest'
     continueOnError: false
     steps:
-    - script: echo Hello, world!
-      displayName: 'Run a one-line script'
-
-    - task: CopyFiles@2
+    - task: TfxInstaller@2
       inputs:
-        Contents: |
-          $(Build.SourcesDirectory)/images/**/*
-          $(Build.SourcesDirectory)/task/**/*
-          $(Build.SourcesDirectory)/LICENSE.txt
-          $(Build.SourcesDirectory)/README.md
-          $(Build.SourcesDirectory)/vss-extension.json
-        TargetFolder: '$(build.artifactstagingdirectory)'
-        CleanTargetFolder: true
-        OverWrite: true
+        version: 'v0.7.x'
+
+    - task: PackageAzureDevOpsExtension@2
+      inputs:
+        rootFolder: '$(Build.SourcesDirectory)'
+        outputPath: '$(Build.ArtifactStagingDirectory)'
+        extensionVersion: '1.$(Year:yy).$(DayOfYear).$(Rev:r)'
+        updateTasksVersion: false
 
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: '$(Build.artifactstagingdirectory)'
+        targetPath: '$(Build.artifactstagingdirectory)/*.vsix'
         artifact: 'Extension'
         publishLocation: 'pipeline'
 
+- stage: Test
+  jobs:
+  - job: Deploy
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    continueOnError: false
+    steps:
+
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        buildType: 'current'
+        targetPath: '$(Pipeline.Workspace)'
+
+    - task: TfxInstaller@2
+      inputs:
+        version: 'v0.7.x'
+
+    - task: PublishAzureDevOpsExtension@2
+      inputs:
+        connectTo: 'VsTeam'
+        connectedServiceName: 'VS Marketplace'
+        fileType: 'vsix'
+        vsixFile: '$(Pipeline.Workspace)/extension/*.vsix'
+        extensionTag: '-test'
+        updateTasksVersion: false
+        extensionVisibility: 'private'
+        shareWith: 'mummy-test'
+    
+    - task: InstallAzureDevOpsExtension@2
+      inputs:
+        connectTo: 'VsTeam'
+        connectedServiceName: 'VS Marketplace'
+        method: 'id'
+        publisherId: 'mmajcica'
+        extensionId: 'retain-release'
+        extensionTag: '-test'
+        accounts: 'https://dev.azure.com/mummy-test'
