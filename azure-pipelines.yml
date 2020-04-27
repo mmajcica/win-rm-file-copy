@@ -23,8 +23,8 @@ stages:
     - task: CopyFiles@2
       inputs:
         Contents: |
-          $(Build.SourcesDirectory)/images
-          $(Build.SourcesDirectory)/task
+          $(Build.SourcesDirectory)/images/
+          $(Build.SourcesDirectory)/task/
           $(Build.SourcesDirectory)/LICENSE.txt
           $(Build.SourcesDirectory)/README.md
           $(Build.SourcesDirectory)/vss-extension.json
