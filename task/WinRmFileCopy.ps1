@@ -197,7 +197,7 @@ try
 
             Write-Output "Copy started for - $machineName"
 
-            $job = Start-Job -ScriptBlock $CopyJob -ArgumentList $machineName, $sourcePath, $targetPath, $machineCredential, $cleanTargetBeforeCopy, $machinePort, $useSsl, $verbose
+            $job = Start-Job -ScriptBlock $CopyJob -ArgumentList $machineName, $sourcePath, $targetPath, $machineCredential, $cleanTargetBeforeCopy, $machinePort, $useSsl, $TestCertificate, $verbose
 
             $Jobs.Add($job.Id, $machine)
         }        
