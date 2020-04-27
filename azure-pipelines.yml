@@ -19,9 +19,22 @@ stages:
     steps:
     - script: echo Hello, world!
       displayName: 'Run a one-line script'
+
+    - task: CopyFiles@2
+      inputs:
+        Contents: |
+          $(Build.SourcesDirectory)/images
+          $(Build.SourcesDirectory)/task
+          $(Build.SourcesDirectory)/LICENSE.txt
+          $(Build.SourcesDirectory)/README.md
+          $(Build.SourcesDirectory)/vss-extension.json
+        TargetFolder: '$(build.artifactstagingdirectory)'
+        CleanTargetFolder: true
+        OverWrite: true
+
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: '$(Build.SourcesDirectory)'
+        targetPath: '$(Build.artifactstagingdirectory)'
         artifact: 'Extension'
         publishLocation: 'pipeline'
 
