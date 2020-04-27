@@ -13,8 +13,6 @@ stages:
 - stage: Build
   jobs:
   - job: Build
-    pool:
-      image: 'ubuntu-latest'
     continueOnError: false
     steps:
     - task: TfxInstaller@2
@@ -37,11 +35,8 @@ stages:
 - stage: Test
   jobs:
   - job: Deploy
-    pool:
-      vmImage: 'Ubuntu-16.04'
     continueOnError: false
     steps:
-
     - task: DownloadPipelineArtifact@2
       inputs:
         buildType: 'current'
@@ -54,7 +49,7 @@ stages:
     - task: PublishAzureDevOpsExtension@2
       inputs:
         connectTo: 'VsTeam'
-        connectedServiceName: 'VS Marketplace'
+        connectedServiceName: 'Marketplace Test'
         fileType: 'vsix'
         vsixFile: '$(Pipeline.Workspace)/extension/*.vsix'
         extensionTag: '-test'
@@ -65,7 +60,7 @@ stages:
     - task: InstallAzureDevOpsExtension@2
       inputs:
         connectTo: 'VsTeam'
-        connectedServiceName: 'VS Marketplace'
+        connectedServiceName: 'Marketplace Test'
         method: 'id'
         publisherId: 'mmajcica'
         extensionId: 'retain-release'
