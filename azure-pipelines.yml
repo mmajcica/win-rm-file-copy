@@ -58,6 +58,7 @@ stages:
               fileType: 'vsix'
               vsixFile: '$(Pipeline.Workspace)/Extension/*.vsix'
               extensionTag: '-test'
+              extensionName: 'WinRm File Copy - Test'
               updateTasksVersion: false
               extensionVisibility: 'private'
               shareWith: 'mummy-test'
@@ -68,6 +69,6 @@ stages:
               connectedServiceName: 'Marketplace'
               method: 'id'
               publisherId: 'mmajcica'
-              extensionId: 'retain-release'
+              extensionId: 'win-rm-file-copy'
               extensionTag: '-test'
               accounts: 'https://dev.azure.com/mummy-test'
