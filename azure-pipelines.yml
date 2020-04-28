@@ -89,12 +89,3 @@ stages:
               connectedServiceName: 'Marketplace'
               fileType: 'vsix'
               vsixFile: '$(Pipeline.Workspace)/Extension/*.vsix'
-              shareWith: 'mummy'
-          - task: InstallAzureDevOpsExtension@2
-            inputs:
-              connectTo: 'VsTeam'
-              connectedServiceName: 'Marketplace'
-              method: 'id'
-              publisherId: 'mmajcica'
-              extensionId: 'win-rm-file-copy'
-              accounts: 'https://dev.azure.com/mummy'
