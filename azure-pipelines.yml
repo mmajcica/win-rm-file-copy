@@ -65,3 +65,36 @@ stages:
               extensionId: 'win-rm-file-copy'
               extensionTag: '-test'
               accounts: 'https://dev.azure.com/mummy-test'
+
+- stage: Production
+  condition: succeeded('Test')
+  jobs:
+  - deployment: Deploy
+    continueOnError: false
+    environment: Marketplace
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              buildType: 'current'
+              targetPath: '$(Pipeline.Workspace)'
+          - task: TfxInstaller@2
+            inputs:
+              version: 'v0.7.x'
+          - task: PublishAzureDevOpsExtension@2
+            inputs:
+              connectTo: 'VsTeam'
+              connectedServiceName: 'Marketplace'
+              fileType: 'vsix'
+              vsixFile: '$(Pipeline.Workspace)/Extension/*.vsix'
+              shareWith: 'mummy'
+          - task: InstallAzureDevOpsExtension@2
+            inputs:
+              connectTo: 'VsTeam'
+              connectedServiceName: 'Marketplace'
+              method: 'id'
+              publisherId: 'mmajcica'
+              extensionId: 'win-rm-file-copy'
+              accounts: 'https://dev.azure.com/mummy'
