@@ -11,7 +11,7 @@ In certain situations, due to the network restrictions, mounting the drive and u
 
 The only requirement is PowerShell V5 installed both on the build server and on the machine on which you are trying to copy the files to.
 
-### The different parameters of the task are explained below:
+### The different parameters of the task are explained below
 
 * **Source**: The source of the files. As described above using pre-defined system variables like $(Build.Repository.LocalPath) make it easy to specify the location of the build on the Build Automation Agent machine. The variables resolve to the working folder on the agent machine, when the task is run on it. Wild cards like **\\*.zip are not supported. Probably you are going to copy something from your artifacts folder that was generated in previous steps of your build/release, at example '$(System.ArtifactsDirectory)\\Something'.
 * **Machines**: Specify comma separated list of machine FQDNs/ip addresses along with port(optional). For example dbserver.fabrikam.com, dbserver_int.fabrikam.com:5988,192.168.34:5933.
@@ -25,11 +25,14 @@ The only requirement is PowerShell V5 installed both on the build server and on 
 
 ## Task version history
 
+* 2.0.7 - A bug has been addressed that will not ignore certs in case of parallel copy ([#11](https://github.com/mmajcica/win-rm-file-copy/issues/11))
 * 2.0.7 - Solved the issue where task can't resolve reverse DNS for IP addresses ([#4](https://github.com/mmajcica/win-rm-file-copy/issues/4))
 * 2.0.6 - "minimumAgentVersion" set to "1.95.0" in order to ensure the compatibility with TFS 2015 Update 2 ([#5](https://github.com/mmajcica/win-rm-file-copy/issues/5))
 * 2.0.5 - Solved the issues introduced with v2.0.2 where reverse lookup data in DNS is not present
 * 2.0.2 - Resolve CNAME before creating a WinRM session ([#2](https://github.com/mmajcica/win-rm-file-copy/issues/2))
 * 2.0.1 - Implements the Skip CA Check for HTTPS with a self signed certificate ([#1](https://github.com/mmajcica/win-rm-file-copy/issues/1))
+
+[![Build Status](https://dev.azure.com/mummy/Azure%20DevOps%20Extensions/_apis/build/status/mmajcica.win-rm-file-copy?branchName=master)](https://dev.azure.com/mummy/Azure%20DevOps%20Extensions/_build/latest?definitionId=43&branchName=master)
 
 ## Contributing
 
