@@ -54,9 +54,10 @@ stages:
           - task: PublishAzureDevOpsExtension@2
             inputs:
               connectTo: 'VsTeam'
-              connectedServiceName: 'Marketplace'
+              connectedServiceName: 'Marketplace Test'
               fileType: 'vsix'
               vsixFile: '$(Pipeline.Workspace)/Extension/*.vsix'
+              publisherId: 'mmajcica-test2'
               extensionTag: '-test'
               extensionName: 'WinRm File Copy - Test'
               updateTasksVersion: false
@@ -66,9 +67,9 @@ stages:
           - task: InstallAzureDevOpsExtension@2
             inputs:
               connectTo: 'VsTeam'
-              connectedServiceName: 'Marketplace'
+              connectedServiceName: 'Marketplace Test'
               method: 'id'
-              publisherId: 'mmajcica'
+              publisherId: 'mmajcica-test2'
               extensionId: 'win-rm-file-copy'
               extensionTag: '-test'
               accounts: 'https://dev.azure.com/mummy-test'
