@@ -15,14 +15,12 @@ stages:
     - task: TfxInstaller@2
       inputs:
         version: 'v0.7.x'
-
     - task: PackageAzureDevOpsExtension@2
       inputs:
         rootFolder: '$(Build.SourcesDirectory)'
         outputPath: '$(Build.ArtifactStagingDirectory)/Extension'
         extensionVersion: '$(Build.BuildNumber)'
         updateTasksVersion: false
-
     - task: PublishPipelineArtifact@1
       inputs:
         targetPath: '$(Build.ArtifactStagingDirectory)/Extension'
@@ -43,11 +41,6 @@ stages:
             inputs:
               buildType: 'current'
               targetPath: '$(Pipeline.Workspace)'
-          - task: Bash@3
-            inputs:
-              targetType: 'inline'
-              script: 'ls'
-              workingDirectory: '$(Pipeline.Workspace)/Extension'
           - task: TfxInstaller@2
             inputs:
               version: 'v0.7.x'
@@ -63,7 +56,6 @@ stages:
               updateTasksVersion: false
               extensionVisibility: 'private'
               shareWith: 'mummy-test'
-              
           - task: InstallAzureDevOpsExtension@2
             inputs:
               connectTo: 'VsTeam'
